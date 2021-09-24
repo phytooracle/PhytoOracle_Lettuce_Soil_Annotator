@@ -1,7 +1,7 @@
 # PhytoOracle Lettuce Soil Annotator
 
 ## Train
-
+image: `armanzarei/lettuce-soil-segmentation-train`
 - `docker run -it --gpus all -v ${DATASET_PATH}:/src/data armanzarei/lettuce-soil-segmentation-train`
   - `--num_epochs` can be passed to control the number of train epochs
   - `${DATASET_PATH}` is the path to a directory which has a structure like below
@@ -27,6 +27,7 @@
 - `docker rm ${CONTAINER_ID}`
 
 ## Annotator
+image: `armanzarei/lettuce-soil-segmentation-annotate`
 
 `docker run --rm --gpus all -v ${PATH_TO_DATA}:/src/data armanzarei/lettuce-soil-segmentation-annotate`
 - `${PATH_TO_DATA}` is the path to the directory which contains a bunch of `.ply` format files
