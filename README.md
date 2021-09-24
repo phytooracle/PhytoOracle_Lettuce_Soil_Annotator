@@ -26,15 +26,15 @@ image: `armanzarei/lettuce-soil-segmentation-train`
 - `docker cp ${CONTAINER_ID}:/src/model.pth ${PATH_TO_SAVE}/model.pth`
 - `docker rm ${CONTAINER_ID}`
 
-## Annotator
-image: `armanzarei/lettuce-soil-segmentation-annotate`
+## Predict
+image: `armanzarei/lettuce-soil-segmentation-predict`
 
-`docker run --rm --gpus all -v ${PATH_TO_DATA}:/src/data armanzarei/lettuce-soil-segmentation-annotate`
+`docker run --rm --gpus all -v ${PATH_TO_DATA}:/src/data armanzarei/lettuce-soil-segmentation-predict`
 - `${PATH_TO_DATA}` is the path to the directory which contains a bunch of `.ply` format files
 
 :black_medium_square: If you want to use a new trained model (rather than the pretrained model inside the container) you can use `--use_given_model` flag and mount the trained model to `/src/new_trained_model/DGCNN.pth`
 
-`docker run --rm --gpus all -v ${PATH_TO_DATA}:/src/data -v ${PATH_TO_TRAINED_MODEL}:/src/new_trained_model/DGCNN.pth armanzarei/lettuce-soil-segmentation-annotate --use_given_model`
+`docker run --rm --gpus all -v ${PATH_TO_DATA}:/src/data -v ${PATH_TO_TRAINED_MODEL}:/src/new_trained_model/DGCNN.pth armanzarei/lettuce-soil-segmentation-predict --use_given_model`
 
 ---
 
