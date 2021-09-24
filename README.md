@@ -36,12 +36,13 @@ image: `armanzarei/lettuce-soil-segmentation-annotate`
 
 `docker run --rm --gpus all -v ${PATH_TO_DATA}:/src/data -v ${PATH_TO_TRAINED_MODEL}:/src/new_trained_model/DGCNN.pth armanzarei/lettuce-soil-segmentation-annotate --use_given_model`
 
+---
+
+To get access to the dataset (raw/annotated) : contact `armanzarei1378[at]gmail[dot]com`
 
 ---
 
-Model in use: `Dynamic Graph CNN (DGCNN)`
-
----
+**Model in use**: `Dynamic Graph CNN (DGCNN)`
 
 Other tested models: 
   - `PointNet`
