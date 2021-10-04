@@ -49,4 +49,4 @@ Other tested models:
   - `PointNet++`
   - `RandLANet` 
 
-more detail: [Link](https://github.com/ArmanZarei/3D_Lettuce_Soil_Segmentation)
+more details: [Link](https://github.com/ArmanZarei/3D_Lettuce_Soil_Segmentation)
