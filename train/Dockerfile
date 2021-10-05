@@ -11,4 +11,4 @@ RUN apt-get update && apt-get install -y libgl1
 
 ADD . .
 
-ENTRYPOINT ["python3", "./train.py"]
+ENTRYPOINT ["python3", "./src/train.py"]
