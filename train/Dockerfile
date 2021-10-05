@@ -10,7 +10,7 @@ RUN apt-get install -y python3.8 \
                        python3-pip
 # ADD requirements.txt .
 
-RUN pip3 install -r ./requirements.txt
+RUN pip3 install -r ./src/requirements.txt
 
 RUN apt-get update
 
