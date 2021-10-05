@@ -1,20 +1,17 @@
-FROM ubuntu:18.04
+FROM python:3.8
 
-WORKDIR /opt
-COPY . /opt
+WORKDIR /src
+COPY . /src
 
-USER root
 
-RUN apt-get update
-RUN apt-get install -y python3.8 \
-                       python3-pip
+
 # ADD requirements.txt .
 
 RUN pip3 install -r ./src/requirements.txt
 
-RUN apt-get update
-
+RUN apt-get update && apt-get install -y libgl1
 
 ADD . .
+
 
 ENTRYPOINT ["python3", "./src/train.py"]
