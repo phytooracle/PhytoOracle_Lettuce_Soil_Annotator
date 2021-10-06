@@ -3,8 +3,9 @@ FROM python:3.8
 RUN pip install --upgrade pip
 
 WORKDIR /src
+COPY . /src
 
-COPY requirements.txt .
+COPY ./requirements.txt .
 
 RUN ls
 
