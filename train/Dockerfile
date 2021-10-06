@@ -6,7 +6,7 @@ WORKDIR /src
 
 RUN pwd
 
-RUN pip3 install -r /src/requirements.txt
+RUN pip3 install -r ./src/requirements.txt
 
 RUN apt-get update && apt-get install -y libgl1
 
