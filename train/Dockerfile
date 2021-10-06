@@ -6,7 +6,7 @@ WORKDIR /src
 
 RUN ls
 
-RUN pip3 install -r ./requirements.txt
+RUN pip3 install -r ./src/train/requirements.txt
 
 RUN apt-get update && apt-get install -y libgl1
 
