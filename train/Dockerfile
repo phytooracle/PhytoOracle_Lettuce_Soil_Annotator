@@ -1,15 +1,17 @@
 FROM python:3.8
 
+RUN pip install --upgrade pip
+
 WORKDIR /src
 
-# ADD requirements.txt .
+COPY requirements.txt .
 
 RUN ls
 
-RUN pip3 install -r ./src/train/requirements.txt
+RUN pip3 install -r requirements.txt
 
 RUN apt-get update && apt-get install -y libgl1
 
-ADD . .
+COPY . .
 
 ENTRYPOINT ["python3", "./src/train.py"]
