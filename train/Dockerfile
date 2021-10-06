@@ -2,7 +2,7 @@ FROM python:3.8
 
 WORKDIR /src
 
-ADD requirements.txt .
+# ADD requirements.txt .
 
 RUN pwd
 
