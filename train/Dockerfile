@@ -4,9 +4,9 @@ WORKDIR /src
 
 # ADD requirements.txt .
 
-RUN pwd
+RUN ls
 
-RUN pip3 install -r ./src/requirements.txt
+RUN pip3 install -r ./requirements.txt
 
 RUN apt-get update && apt-get install -y libgl1
 
