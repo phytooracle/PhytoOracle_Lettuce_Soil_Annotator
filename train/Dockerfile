@@ -4,7 +4,7 @@ WORKDIR /src
 
 ADD requirements.txt .
 
-pwd
+RUN pwd
 
 RUN pip3 install -r /src/requirements.txt
 
