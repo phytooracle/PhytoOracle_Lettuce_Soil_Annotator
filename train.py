@@ -10,13 +10,62 @@ import argparse
 import os
 
 
-if not os.path.isdir('./data'):
-    raise Exception("./data dir does not exist.")
+# if not os.path.isdir('./data'):
+#     raise Exception("./data dir does not exist.")
 
 #-------------------- Variables --------------------#
-parser = argparse.ArgumentParser()
-parser.add_argument('--num_epochs', type=int, default=150)
-args = parser.parse_args()
+
+
+def get_args():
+    """Get command-line arguments"""
+
+    parser = argparse.ArgumentParser(
+        description='Plant clustering',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+    parser.add_argument('-i',
+                        metavar='indir',
+                        type = str,
+                        help='input directory, there should be a folder inside this named data')
+
+    parser.add_argument('-b',
+                        metavar = 'batch_size',
+                        type = int,
+                        default= 32)
+
+
+    parser.add_argument('-lr',
+                        metavar = 'learning_rate',
+                        type = float,
+                        default= 0.01)
+    
+    parser.add_argument('-mm',
+                        metavar = 'model_momentum',
+                        type = float,
+                        default= 0.9)
+    
+    parser.add_argument('-wd',
+                        metavar = 'weight_decay',
+                        type = float,
+                        default= 1e-4)
+
+    parser.add_argument('-em',
+                        metavar = 'eta_min',
+                        type = float,
+                        default= 1e-3)           
+
+
+                        
+
+
+
+    parser.add_argument('--num_epochs', type=int, default=150)
+
+    return parser.parse_args()
+
+
+
+args = get_args()
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(f'Device: {device}')
@@ -28,17 +77,17 @@ print(f'Model: {model_name}\n{"-"*30}')
 
 #-------------------- Dataset and DataLoader --------------------# 
 train_dataset = LettucePointCloudDataset(
-    root_dir='', 
+    root_dir=args.indir, 
     is_train=True,
     transform=transforms.Compose([
         RandomRotation()
     ])
 )
-train_dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+train_dataloader = DataLoader(train_dataset, args.batch_size, shuffle=True)
 
 #-------------------- Optimizer and Scheduler --------------------#
-optimizer = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay=1e-4)
-scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, args.num_epochs, eta_min=1e-3)
+optimizer = torch.optim.SGD(model.parameters(), lr=args.learning_rate, momentum=args.model_momentum, weight_decay=args.weight_decay)
+scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, args.num_epochs, eta_min=args.eta_min)
 
 #-------------------- Train --------------------#
 model.train()
