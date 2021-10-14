@@ -24,32 +24,38 @@ def get_args():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('-i',
+                        '--indir',
                         metavar='indir',
                         type = str,
                         help='input directory, there should be a folder inside this named data')
 
     parser.add_argument('-b',
+                        '--batch_size',
                         metavar = 'batch_size',
                         type = int,
                         default= 32)
 
 
     parser.add_argument('-lr',
+                        '--batch_size',
                         metavar = 'learning_rate',
                         type = float,
                         default= 0.01)
     
     parser.add_argument('-mm',
+                        '--model_momentum',
                         metavar = 'model_momentum',
                         type = float,
                         default= 0.9)
     
     parser.add_argument('-wd',
+                        '--weight_decay',
                         metavar = 'weight_decay',
                         type = float,
                         default= 1e-4)
 
     parser.add_argument('-em',
+                        '--eta_min',
                         metavar = 'eta_min',
                         type = float,
                         default= 1e-3)           
