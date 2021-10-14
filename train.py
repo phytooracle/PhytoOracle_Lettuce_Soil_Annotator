@@ -37,7 +37,7 @@ def get_args():
 
 
     parser.add_argument('-lr',
-                        '--batch_size',
+                        '--learning_rate',
                         metavar = 'learning_rate',
                         type = float,
                         default= 0.01)
