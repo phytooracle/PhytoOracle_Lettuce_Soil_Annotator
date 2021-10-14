@@ -54,11 +54,6 @@ def get_args():
                         type = float,
                         default= 1e-3)           
 
-
-                        
-
-
-
     parser.add_argument('--num_epochs', type=int, default=150)
 
     return parser.parse_args()
