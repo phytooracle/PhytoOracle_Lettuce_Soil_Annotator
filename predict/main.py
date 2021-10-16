@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--indir', type = str)
 parser.add_argument('--model_path', type = str)
 parser.add_argument('--K', type=int, default=51)
-parser.add_argument('--n_samples', type=str, default=1500)
+parser.add_argument('--n_samples', type=int, default=1500)
 
 args = parser.parse_args()
 
