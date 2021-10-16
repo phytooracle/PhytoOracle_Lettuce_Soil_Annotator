@@ -11,29 +11,36 @@ import os
 from dgcnn import DGCNN
 
 
-if not os.path.isdir('./data'):
-    raise Exception("./data dir does not exist. You should mount data to this directory.")
+# if not os.path.isdir('./data'):
+#     raise Exception("./data dir does not exist. You should mount data to this directory.")
+
+    
 
 parser = argparse.ArgumentParser()
+parser.add_argument('-i', '--indir', type = str)
+parser.add_argument('--model_path', type = str)
 parser.add_argument('--K', type=int, default=51)
 parser.add_argument('--n_samples', type=str, default=1500)
-parser.add_argument('--use_given_model', action='store_true')
+
 args = parser.parse_args()
 
-if args.use_given_model:
-    if not os.path.isfile('./new_trained_model/DGCNN.pth'):
-        raise Exception('./new_trained_model/DGCNN.pth is not a file. You have to mount your trained model when you use use_given_model argument.')
+# if args.use_given_model:
+#     if not os.path.isfile('./new_trained_model/DGCNN.pth'):
+#         raise Exception('./new_trained_model/DGCNN.pth is not a file. You have to mount your trained model when you use use_given_model argument.')
 
-dataset = LettucePointCloudDataset(files_dir='./data')
+dataset = LettucePointCloudDataset(files_dir=args.indir)
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(f'Device: {device}')
 
 model = DGCNN(num_classes=2).to(device)
-if args.use_given_model:
-    model.load_state_dict(torch.load('./new_trained_model/DGCNN.pth', map_location=device))
-else:
-    model.load_state_dict(torch.load('./pretrained_model/DGCNN.pth', map_location=device))
+# if args.use_given_model:
+#     model.load_state_dict(torch.load('./new_trained_model/DGCNN.pth', map_location=device))
+# else:
+#     model.load_state_dict(torch.load('./pretrained_model/DGCNN.pth', map_location=device))
+
+model.load_state_dict(torch.load(args.model_path, map_location=device))
+
 print(f'Model: {type(model).__name__}\n{"-"*15}')
 model.eval()
 
