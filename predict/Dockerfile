@@ -1,5 +1,8 @@
 FROM ubuntu:18.04
 
+FROM nvidia/cuda:10.2-base
+CMD nvidia-smi
+
 WORKDIR /opt
 COPY . /opt
 
