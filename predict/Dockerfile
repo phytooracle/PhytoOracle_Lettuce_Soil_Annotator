@@ -1,7 +1,6 @@
 FROM ubuntu:18.04
 
-FROM nvidia/cuda:10.2-base
-CMD nvidia-smi
+
 
 WORKDIR /opt
 COPY . /opt
@@ -19,6 +18,19 @@ RUN apt-get install -y python3.6-dev \
                        libsm6 \
                        libxext6
 
+
+
+
+RUN apt-get --purge remove -y nvidia*
+
+ADD ./Downloads/nvidia_installers /tmp/nvidia 
+RUN /tmp/nvidia/NVIDIA-Linux-x86_64-331.62.run -s -N --no-kernel-module
+RUN rm -rf /tmp/selfgz7 
+RUN /tmp/nvidia/cuda-linux64-rel-6.0.37-18176142.run -noprompt
+RUN /tmp/nvidia/cuda-samples-linux-6.0.37-18176142.run -noprompt -cudaprefix=/usr/local/cuda-6.0
+RUN export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64
+RUN touch /etc/ld.so.conf.d/cuda.conf
+RUN rm -rf /temp/* 
 RUN apt-get update
 RUN apt-get install -y libgdal-dev
 RUN pip3 install --upgrade pip
