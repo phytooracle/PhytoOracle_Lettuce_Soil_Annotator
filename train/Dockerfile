@@ -14,11 +14,12 @@ RUN apt-get install -y python3.6-dev \
                        apt-utils \
                        ffmpeg \
                        libsm6 \
-                       libxext6 \
-                       nvidia-container-toolkit
+                       libxext6
+                       
 
 RUN apt-get update
 RUN apt-get install -y libgdal-dev
+RUN apt-get install -y nvidia-container-toolkit
 RUN pip3 install --upgrade pip
 RUN pip3 install -r /opt/train/requirements.txt
 RUN ldconfig
