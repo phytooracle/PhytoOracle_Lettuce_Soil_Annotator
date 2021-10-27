@@ -10,7 +10,8 @@ from tqdm import tqdm
 import os
 from dgcnn import DGCNN
 import pandas as pd
-
+import glob
+import open3d as o3d
 # Functions
 # -----------------------------------------------------------------------------------------------------------
 
