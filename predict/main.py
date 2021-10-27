@@ -95,6 +95,7 @@ parser.add_argument('--n_samples', type=int, default=1500)
 
 args = parser.parse_args()
 
+
 # if args.use_given_model:
 #     if not os.path.isfile('./new_trained_model/DGCNN.pth'):
 #         raise Exception('./new_trained_model/DGCNN.pth is not a file. You have to mount your trained model when you use use_given_model argument.')
@@ -138,3 +139,5 @@ for (f_path, points) in tqdm(dataset):
 
     np.save(f_path.replace('.ply', '.npy'), labels)
 
+
+separate_plant_points_and_save_volumes(args.indir, args.seg_dir, args.vcsv_name)
