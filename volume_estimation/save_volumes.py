@@ -7,7 +7,7 @@ import open3d as o3d
 # Functions
 # -----------------------------------------------------------------------------------------------------------
 
-def save_volumes(indir, outdir, csv_name):
+def save_volumes(indir, csv_name):
 
     df = pd.DataFrame(columns = ['plant_name', 'date', 'segmented_convex_hull_volume'])
 
@@ -56,4 +56,4 @@ parser.add_argument('-f', '--vcsv_name', default = 'hull_volumes', type = str)
 
 args = parser.parse_args()
 
-save_volumes(args.indir, args.outdir, args.vcsv_name)
+save_volumes(args.indir,  args.vcsv_name)
