@@ -96,7 +96,7 @@ args = parser.parse_args()
 
 dataset = LettucePointCloudDataset(files_dir=args.indir)
 
-device = torch.device("cuda:0")
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(f'Device: {device}')
 
 model = DGCNN(num_classes=2).to(device)
