@@ -54,4 +54,4 @@ parser.add_argument('-f', '--vcsv_name', default = 'hull_volumes', type = str)
 
 args = parser.parse_args()
 
-separate_plant_points_and_save_volumes(args.indir, args.outdir, args.vcsv_name)
+save_volumes(args.indir, args.outdir, args.vcsv_name)
