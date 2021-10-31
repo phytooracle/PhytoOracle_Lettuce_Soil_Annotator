@@ -39,7 +39,7 @@ def save_volumes(indir, outdir, csv_name):
         except:
             print('No pcd')
 
-    df.to_csv(os.path.join(outdir, csv_name +  '.csv'))
+    df.to_csv(os.path.join(indir, csv_name +  '.csv'))
 
 
 # -----------------------------------------------------------------------------------------------------------
@@ -51,7 +51,6 @@ def save_volumes(indir, outdir, csv_name):
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--indir', type = str)
-parser.add_argument('-o', '--outdir', default = 'segmented_plants', type = str)
 parser.add_argument('-f', '--vcsv_name', default = 'hull_volumes', type = str)
 
 
