@@ -11,7 +11,7 @@ def save_volumes(indir, csv_name):
 
     df = pd.DataFrame(columns = ['plant_name', 'date', 'segmented_convex_hull_volume'])
 
-    plant_dirs = os.path.join(indir, '*')
+    plant_dirs = glob.glob(os.path.join(indir, '*'))
 
     for plant_dir in plant_dirs:
         try:
