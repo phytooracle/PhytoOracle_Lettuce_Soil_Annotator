@@ -14,27 +14,30 @@ def save_volumes(indir, outdir, csv_name):
     plant_dirs = os.path.join(indir, '*')
 
     for plant_dir in plant_dirs:
-        plant_name = os.path.basename(plant_dir)
+        try:
+            plant_name = os.path.basename(plant_dir)
 
-        pcd_path = os.path.join(plant_dir, 'combined_unregistered_plant.ply')
- 
-        pcd = o3d.io.read_point_cloud(pcd_path)
-
-
-        # store bounding volume in csv
-        hull,_ = pcd.compute_convex_hull()
-
-        hull_ls = o3d.geometry.LineSet.create_from_triangle_mesh(hull)
-        hull_ls.paint_uniform_color((1, 0, 0))
-        # o3d.visualization.draw_geometries([pcd2, hull_ls])
+            pcd_path = os.path.join(plant_dir, 'combined_unregistered_plant.ply')
+    
+            pcd = o3d.io.read_point_cloud(pcd_path)
 
 
-        hull_volume = hull.get_volume()
+            # store bounding volume in csv
+            hull,_ = pcd.compute_convex_hull()
 
-        pcd_measurements = [plant_name, date, hull_volume]
+            hull_ls = o3d.geometry.LineSet.create_from_triangle_mesh(hull)
+            hull_ls.paint_uniform_color((1, 0, 0))
+            # o3d.visualization.draw_geometries([pcd2, hull_ls])
 
-        a_series = pd.Series(pcd_measurements, index = df.columns)
-        df = df.append(a_series, ignore_index=True)
+
+            hull_volume = hull.get_volume()
+
+            pcd_measurements = [plant_name, date, hull_volume]
+
+            a_series = pd.Series(pcd_measurements, index = df.columns)
+            df = df.append(a_series, ignore_index=True)
+        except:
+            print('No pcd')
 
     df.to_csv(os.path.join(outdir, csv_name +  '.csv'))
 
