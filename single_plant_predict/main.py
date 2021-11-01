@@ -127,7 +127,7 @@ for (f_path, points) in tqdm(dataset):
 
     labels[others_indices_mask] = other_labels
 
-    np.save(f_path.replace('.pcd', '.npy'), labels)
+    np.save(f_path.replace('.ply', '.npy'), labels)
 
         # print(lables[0])
     # dropping no plant points
@@ -136,13 +136,13 @@ for (f_path, points) in tqdm(dataset):
     plant_arr = np.delete(arr, np.where( labels == 0), 0)
     plant_pcd = o3d.geometry.PointCloud()
     plant_pcd.points = o3d.utility.Vector3dVector(plant_arr)
-    o3d.io.write_point_cloud(os.path.join(f_path.replace('.pcd', '_plant.ply')), plant_pcd)
+    o3d.io.write_point_cloud(os.path.join(f_path.replace('.ply', '_plant.ply')), plant_pcd)
 
     arr = np.asarray(points)
     soil_arr = np.delete(arr, np.where( labels == 1), 0)
     soil_pcd = o3d.geometry.PointCloud()
     soil_pcd.points = o3d.utility.Vector3dVector(soil_arr)
-    o3d.io.write_point_cloud(os.path.join(f_path.replace('.pcd', '_soil.ply')), soil_pcd)
+    o3d.io.write_point_cloud(os.path.join(f_path.replace('.ply', '_soil.ply')), soil_pcd)
 
 
 
