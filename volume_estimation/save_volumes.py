@@ -17,7 +17,8 @@ def save_volumes(indir, csv_name):
         try:
             plant_name = os.path.basename(plant_dir)
 
-            pcd_path = os.path.join(plant_dir, 'combined_unregistered_plant.ply')
+            #pcd_path = os.path.join(plant_dir, 'combined_unregistered_plant.ply')
+            pcd_path = os.path.join(plant_dir, 'combined_multiway_registered.ply')
     
             pcd = o3d.io.read_point_cloud(pcd_path)
 
