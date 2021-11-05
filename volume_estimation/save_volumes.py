@@ -30,7 +30,7 @@ def save_volumes(indir, csv_name):
             hull_ls.paint_uniform_color((1, 0, 0))
             # o3d.visualization.draw_geometries([pcd2, hull_ls])
 
-            print('doing hull')
+            print('Calculating hull volume.')
             hull_volume = hull.get_volume()
 
             pcd_measurements = [plant_name, hull_volume]
@@ -38,7 +38,7 @@ def save_volumes(indir, csv_name):
             a_series = pd.Series(pcd_measurements, index = df.columns)
             df = df.append(a_series, ignore_index=True)
         except:
-            print('No pcd')
+            print('No point cloud found, cannot calculate hull volume.')
 
     df.to_csv(os.path.join(indir, csv_name +  '.csv'))
 
