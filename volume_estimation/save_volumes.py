@@ -9,7 +9,7 @@ import open3d as o3d
 
 def save_volumes(indir, csv_name):
 
-    df = pd.DataFrame(columns = ['plant_name', 'segmented_convex_hull_volume'])
+    df = pd.DataFrame(columns = ['plant_name', 'plant_convex_hull_volume', 'plant_oriented_bounding', 'plant_axis_aligned_bounding'])
 
     plant_dirs = glob.glob(os.path.join(indir, '*'))
 
@@ -29,11 +29,14 @@ def save_volumes(indir, csv_name):
             hull_ls = o3d.geometry.LineSet.create_from_triangle_mesh(hull)
             hull_ls.paint_uniform_color((1, 0, 0))
             # o3d.visualization.draw_geometries([pcd2, hull_ls])
+            
+            obb = pcd.get_oriented_bounding_box().volume()
+            abb = pcd.get_axis_aligned_bounding_box().volume()
 
             print('Calculating hull volume.')
             hull_volume = hull.get_volume()
 
-            pcd_measurements = [plant_name, hull_volume]
+            pcd_measurements = [plant_name, hull_volume, obb, abb]
 
             a_series = pd.Series(pcd_measurements, index = df.columns)
             df = df.append(a_series, ignore_index=True)
