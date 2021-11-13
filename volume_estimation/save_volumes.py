@@ -4,6 +4,10 @@ import os
 import pandas as pd
 import glob
 import open3d as o3d
+from gtda.homology import VietorisRipsPersistence
+from gtda.diagrams import PersistenceEntropy
+from gtda.plotting import plot_point_cloud
+
 # Functions
 # -----------------------------------------------------------------------------------------------------------
 def open_pcd(pcd_path):
