@@ -126,8 +126,8 @@ def get_min_max(pcd):
 # --------------------------------------------------
 def calculate_volume(plant_dir):
 
-    df = pd.DataFrame(columns = ['plant_name', 'plant_convex_hull_volume', 'plant_oriented_bounding', 'plant_axis_aligned_bounding', 'max_x', 'max_y', 'max_z', 'min_x', 'min_y', 'min_z'])
-    # df = pd.DataFrame(columns = ['plant_name', 'plant_convex_hull_volume', 'plant_oriented_bounding', 'plant_axis_aligned_bounding', 'max_x', 'max_y', 'max_z', 'min_x', 'min_y', 'min_z', 'persistence entropies_feature_0', 'persistence entropies_feature_1', 'persistence entropies_feature_2'])
+    # df = pd.DataFrame(columns = ['plant_name', 'plant_convex_hull_volume', 'plant_oriented_bounding', 'plant_axis_aligned_bounding', 'max_x', 'max_y', 'max_z', 'min_x', 'min_y', 'min_z'])
+    df = pd.DataFrame(columns = ['plant_name', 'plant_convex_hull_volume', 'plant_oriented_bounding', 'plant_axis_aligned_bounding', 'max_x', 'max_y', 'max_z', 'min_x', 'min_y', 'min_z', 'persistence entropies_feature_0', 'persistence entropies_feature_1', 'persistence entropies_feature_2'])
 
     try:
         plant_name = os.path.basename(plant_dir)
@@ -143,14 +143,14 @@ def calculate_volume(plant_dir):
                     
         max_x, max_y, max_z, min_x, min_y, min_z = get_min_max(pcd)
         
-        # print('Calculating persistance diagram and entropy.')
-        # down_pcd = downsample_pcd(pcd)
-        # pcd_array = convert_point_cloud_to_array(down_pcd)
-        # features = calculate_persistance_diagram(pcd_array)
-        # zero, one, two = separate_features(features)
+        print('Calculating persistance diagram and entropy.')
+        down_pcd = downsample_pcd(pcd)
+        pcd_array = convert_point_cloud_to_array(down_pcd)
+        features = calculate_persistance_diagram(pcd_array)
+        zero, one, two = separate_features(features)
 
-        pcd_measurements = [plant_name, hull_volume, obb, abb, max_x, max_y, max_z, min_x, min_y, min_z]
-        # pcd_measurements = [plant_name, hull_volume, obb, abb, max_x, max_y, max_z, min_x, min_y, min_z, zero, one, two]
+        # pcd_measurements = [plant_name, hull_volume, obb, abb, max_x, max_y, max_z, min_x, min_y, min_z]
+        pcd_measurements = [plant_name, hull_volume, obb, abb, max_x, max_y, max_z, min_x, min_y, min_z, zero, one, two]
 
         a_series = pd.Series(pcd_measurements, index = df.columns)
         df = df.append(a_series, ignore_index=True)
