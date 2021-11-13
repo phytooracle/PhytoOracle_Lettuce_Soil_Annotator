@@ -35,6 +35,11 @@ def get_args():
                         '--csv_name', 
                         default='hull_volumes', 
                         type=str)
+    
+    parser.add_argument('-c', 
+                        '--cpu', 
+                        required=False, 
+                        type=int)
 
     return parser.parse_args()
 
@@ -168,14 +173,13 @@ def main():
     args = get_args()
     plant_dirs = glob.glob(os.path.join(args.indir, '*'))
 
-    # major_df = pd.DataFrame()
-    # for plant_dir in plant_dirs:
-    #     df = calculate_volume(plant_dir)
-    #     major_df = major_df.append(df)
-    # major_df.to_csv(os.path.join(args.indir, args.csv_name +  '.csv'))
-    
+    if args.cpu: 
+        cpu = args.cpu
+    else: 
+        cpu = multiprocessing.cpu_count()
+
     major_df = pd.DataFrame()
-    with multiprocessing.Pool(multiprocessing.cpu_count()) as p:
+    with multiprocessing.Pool(cpu) as p:
         df = p.map(calculate_volume, plant_dirs)
         major_df = major_df.append(df)
     major_df.to_csv(os.path.join(args.indir, args.csv_name +  '.csv'))
