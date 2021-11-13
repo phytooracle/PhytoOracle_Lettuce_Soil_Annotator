@@ -84,7 +84,7 @@ def separate_features(features):
 
 def save_volumes(indir, csv_name):
 
-    df = pd.DataFrame(columns = ['plant_name', 'plant_convex_hull_volume', 'plant_oriented_bounding', 'plant_axis_aligned_bounding', 'persistence entropies_feature_0', 'persistence entropies_feature_1', 'persistence entropies_feature_2'])
+    df = pd.DataFrame(columns = ['plant_name', 'plant_convex_hull_volume', 'plant_oriented_bounding', 'plant_axis_aligned_bounding']#, 'persistence entropies_feature_0', 'persistence entropies_feature_1', 'persistence entropies_feature_2'])
 
     plant_dirs = glob.glob(os.path.join(indir, '*'))
 
@@ -104,13 +104,13 @@ def save_volumes(indir, csv_name):
             print('Calculating axis aligned bounding box volume.')
             abb = calculate_axis_aligned_bb_volume(pcd)
             
-            print('Calculating persistance diagram and entropy.')
-            down_pcd = downsample_pcd(pcd)
-            pcd_array = convert_point_cloud_to_array(down_pcd)
-            features = calculate_persistance_diagram(pcd_array)
-            zero, one, two = separate_features(features)
+#             print('Calculating persistance diagram and entropy.')
+#             down_pcd = downsample_pcd(pcd)
+#             pcd_array = convert_point_cloud_to_array(down_pcd)
+#             features = calculate_persistance_diagram(pcd_array)
+#             zero, one, two = separate_features(features)
 
-            pcd_measurements = [plant_name, hull_volume, obb, abb, zero, one, two]
+            pcd_measurements = [plant_name, hull_volume, obb, abb]#, zero, one, two]
 
             a_series = pd.Series(pcd_measurements, index = df.columns)
             df = df.append(a_series, ignore_index=True)
