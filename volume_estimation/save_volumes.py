@@ -91,7 +91,7 @@ def get_min_max(pcd):
 
 def save_volumes(indir, csv_name):
 
-    df = pd.DataFrame(columns = ['plant_name', 'plant_convex_hull_volume', 'plant_oriented_bounding', 'plant_axis_aligned_bounding', 'minimum_z', 'maximum_z']#, 'persistence entropies_feature_0', 'persistence entropies_feature_1', 'persistence entropies_feature_2'])
+    df = pd.DataFrame(columns = ['plant_name', 'plant_convex_hull_volume', 'plant_oriented_bounding', 'plant_axis_aligned_bounding', 'max_x', 'max_y', 'max_z', 'min_x', 'min_y', 'min_z']#, 'persistence entropies_feature_0', 'persistence entropies_feature_1', 'persistence entropies_feature_2'])
 
     plant_dirs = glob.glob(os.path.join(indir, '*'))
 
@@ -119,7 +119,7 @@ def save_volumes(indir, csv_name):
 #             features = calculate_persistance_diagram(pcd_array)
 #             zero, one, two = separate_features(features)
 
-            pcd_measurements = [plant_name, hull_volume, obb, abb, min_z, max_z]#, zero, one, two]
+            pcd_measurements = [plant_name, hull_volume, obb, abb, max_x, max_y, max_z, min_x, min_y, min_z]#, zero, one, two]
 
             a_series = pd.Series(pcd_measurements, index = df.columns)
             df = df.append(a_series, ignore_index=True)
