@@ -91,7 +91,7 @@ def get_min_max(pcd):
 
 def save_volumes(indir, csv_name):
 
-    df = pd.DataFrame(columns = ['plant_name', 'plant_convex_hull_volume', 'plant_oriented_bounding', 'plant_axis_aligned_bounding', 'max_x', 'max_y', 'max_z', 'min_x', 'min_y', 'min_z']#, 'persistence entropies_feature_0', 'persistence entropies_feature_1', 'persistence entropies_feature_2'])
+    df = pd.DataFrame(columns = ['plant_name', 'plant_convex_hull_volume', 'plant_oriented_bounding', 'plant_axis_aligned_bounding', 'max_x', 'max_y', 'max_z', 'min_x', 'min_y', 'min_z'])#, 'persistence entropies_feature_0', 'persistence entropies_feature_1', 'persistence entropies_feature_2'])
 
     plant_dirs = glob.glob(os.path.join(indir, '*'))
 
