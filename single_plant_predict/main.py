@@ -15,71 +15,48 @@ import open3d as o3d
 # Functions
 # -----------------------------------------------------------------------------------------------------------
 
-def separate_plant_points_and_save_volumes(indir, outdir, csv_name):
-
-    seg_dir = os.path.join(indir, outdir)
-
-    try:
-        os.mkdir(seg_dir)
-    except:
-        pass
 
 
-    df = pd.DataFrame(columns = ['plant_name', 'date', 'segmented_convex_hull_volume']);df
 
+def generate_rotating_gif(array, gif_save_path, n_points=None, force_overwrite=False, scan_number=None):
 
-    # def segment_and_calculate_volume(indir):
-
-    full_plants = glob.glob(os.path.join(indir, '*.ply'))
-
-    print(len(full_plants))
-
-    for pcd_path in full_plants:
-        # Visualize a pcd
-
-        plant_name = os.path.basename(pcd_path).split('cropped')[0][:-1]
-        date = os.path.basename(pcd_path).split('cropped')[1][1:].replace('.ply', '');date
-        pcd = o3d.io.read_point_cloud(pcd_path)
-
-        filename = os.path.basename(pcd_path)
-        # o3d.visualization.draw_geometries([pcd])
-
-        # corrisponding label
-        lables = np.load(pcd_path.replace('.ply', '.npy'))
-
-
-        # print(lables[0])
-        # dropping no plant points
-        arr = np.asarray(pcd.points)
-
-        new_arr = np.delete(arr, np.where( lables == 0), 0);new_arr
-
-
-        pcd2 = o3d.geometry.PointCloud()
-        pcd2.points = o3d.utility.Vector3dVector(new_arr)
-
-        o3d.io.write_point_cloud(os.path.join(seg_dir, filename.replace('.ply', '_segmented.ply')), pcd2)
-
-    # Needs to be done non-distributed since they are all accessing one csv
-
-
-    #     # store bounding volume in csv
-    #     hull,_ = pcd2.compute_convex_hull()
-
-    #     hull_ls = o3d.geometry.LineSet.create_from_triangle_mesh(hull)
-    #     hull_ls.paint_uniform_color((1, 0, 0))
-    #     # o3d.visualization.draw_geometries([pcd2, hull_ls])
-
-
-    #     hull_volume = hull.get_volume()
-
-    #     pcd_measurements = [plant_name, date, hull_volume]
-
-    #     a_series = pd.Series(pcd_measurements, index = df.columns)
-    #     df = df.append(a_series, ignore_index=True)
-
-    # df.to_csv(os.path.join(seg_dir, csv_name +  '.csv'))
-
+    fig = plt.figure(figsize=(9,9))
+    ax = fig.add_subplot(111, projection='3d')
+    x = array[:,0]
+    y = array[:,1]
+    z = array[:,2]
+    c = array[:,3]
+    cmap = 'Greens'
+    ax.scatter(x, y, z,
+               zdir='z',
+               c = c,
+               cmap = 'Dark2_r',
+               marker='.',
+               s=1,
+    )
+    ax.set_xticklabels([])
+    ax.set_yticklabels([])
+    ax.set_zticklabels([])
+    ax.grid(False)
+    ax.xaxis.pane.fill = False # Left pane
+    ax.yaxis.pane.fill = False # Right pane
+    ax.w_xaxis.line.set_color((1.0, 1.0, 1.0, 0.0))
+    ax.w_yaxis.line.set_color((1.0, 1.0, 1.0, 0.0))
+    ax.w_zaxis.line.set_color((1.0, 1.0, 1.0, 0.0))
+    # Transparent panes
+    ax.w_xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+    ax.w_yaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+    # No ticks
+    ax.set_xticks([]) 
+    ax.set_yticks([]) 
+    ax.set_zticks([])
+    ax.set_box_aspect([max(x)-min(x),max(y)-min(y),max(z)-min(z)])
+    def rotate(angle):
+        ax.view_init(azim=angle)
+    #rot_animation = animation.FuncAnimation(fig, rotate, frames=np.arange(0, 361, 2), interval=30)
+    rot_animation = animation.FuncAnimation(fig, rotate, frames=np.arange(0, 361, 15), interval=300)
+    #rot_animation.save('rotation.gif', dpi=80, writer='imagemagick')
+    rot_animation.save(gif_save_path, dpi=80)
 
 # -----------------------------------------------------------------------------------------------------------
     
@@ -93,6 +70,9 @@ parser.add_argument('--K', type=int, default=51)
 parser.add_argument('--n_samples', type=int, default=1500)
 
 args = parser.parse_args()
+
+
+# --------------------------------------------------------------------------------------------------------------
 
 dataset = LettucePointCloudDataset(files_dir=args.indir)
 
@@ -148,4 +128,20 @@ for (f_path, points) in tqdm(dataset):
 
 
 
-    # separate_plant_points_and_save_volumes(ply, args.seg_dir, args.vcsv_name)
+    # Adding in gif generation
+    # labels == what array_path was loading
+    # arr = np.asarray(points) == pcd_path was loading
+
+    # args.indir = ./combined_pointclouds/a_plant_name/
+
+    indir_filepath = args.indir
+    plant_name = indir_filepath.split('/')[-1]
+    gif_path = os.path.join('.', 'plant_reports', plant_name,  'combined_multiway_registered_soil_segmentation.gif')
+
+
+    # pcd_array = generate_pointcloud_array_from_path(pcd_path, array_path)
+
+    pcd_array = np.c_[arr, labels]
+
+    generate_rotating_gif(pcd_array, gif_path)
+
