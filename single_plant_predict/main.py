@@ -13,6 +13,7 @@ import pandas as pd
 import glob
 import open3d as o3d
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 # Functions
 # -----------------------------------------------------------------------------------------------------------
 
