@@ -135,10 +135,9 @@ for (f_path, points) in tqdm(dataset):
     # arr = np.asarray(points) == pcd_path was loading
 
     # args.indir = ./combined_pointclouds/a_plant_name/
-
-    indir_filepath = args.indir
-    plant_name = indir_filepath.split('/')[-1]
-    gif_path = os.path.join('.', 'plant_reports', plant_name,  'combined_multiway_registered_soil_segmentation.gif')
+    
+    out_dir = os.path.dirname(f_path)
+    gif_path = os.path.join(out_dir.replace('combined_pointclouds', 'plant_reports'), 'combined_multiway_registered_soil_segmentation.gif')
 
 
     # pcd_array = generate_pointcloud_array_from_path(pcd_path, array_path)
