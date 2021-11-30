@@ -12,6 +12,7 @@ from dgcnn import DGCNN
 import pandas as pd
 import glob
 import open3d as o3d
+import matplotlib.pyplot as plt
 # Functions
 # -----------------------------------------------------------------------------------------------------------
 
