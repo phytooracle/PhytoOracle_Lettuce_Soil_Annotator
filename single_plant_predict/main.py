@@ -14,6 +14,15 @@ import glob
 import open3d as o3d
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import matplotlib
+
+# Test Command
+# /home/travis/data/season_10/combined_pointclouds/Pacific_74
+# /home/travis/data/ml_weights/dgcnn_trained_on_normalized_arman_format_training_data_perfect_partial_full_30epcs_98acc_47loss.pth
+# python3 main.py -i /home/travis/data/season_10/combined_pointclouds/Pacific_74 --model_path /home/travis/data/ml_weights/dgcnn_trained_on_normalized_arman_format_training_data_perfect_partial_full_30epcs_98acc_47loss.pth
+
+
+
 # Functions
 # -----------------------------------------------------------------------------------------------------------
 
@@ -28,11 +37,20 @@ def generate_rotating_gif(array, gif_save_path, n_points=None, force_overwrite=F
     y = array[:,1]
     z = array[:,2]
     c = array[:,3]
-    cmap = 'Greens'
+
+    an_array = np.where(c == 1, 1, 2)
+
+    colors = ['sienna','green' ]
+
+    cmap_arr= matplotlib.colors.ListedColormap(colors)
+
+
+
+    # cmap = 'Greens'
     ax.scatter(x, y, z,
                zdir='z',
-               c = c,
-               cmap = 'Dark2_r',
+               c = an_array,
+               cmap = cmap_arr,
                marker='.',
                s=1,
     )
