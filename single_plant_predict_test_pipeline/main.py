@@ -40,7 +40,7 @@ def generate_rotating_gif(array, gif_save_path, n_points=None, force_overwrite=F
 
     an_array = np.where(c == 1, 1, 2)
 
-    colors = ['sienna','green' ]
+    colors = ['green','sienna']
 
     cmap_arr= matplotlib.colors.ListedColormap(colors)
 
