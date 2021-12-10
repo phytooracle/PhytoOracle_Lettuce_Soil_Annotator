@@ -83,9 +83,7 @@ def generate_rotating_gif(array, gif_save_path, n_points=None, force_overwrite=F
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', '--plant_path', type = str)
-
-# parser.add_argument('-c', '--crop', action= 'store_true', help= 'set this variable if you are running it after the polynomial cropping container')
-parser.add_argument('-ef', '--expected_filename', type = str)
+parser.add_argument('-ef', '--expected_filename',default = 'foo',type = str)
 
 parser.add_argument('--model_path', type = str)
 parser.add_argument('-s', '--seg_dir', default = 'segmented_plants', type = str)
@@ -120,27 +118,26 @@ args = parser.parse_args()
 
 # --------------------------------------------------------------------------------------------------------------
 # Prep
-#crop = args.crop
+
 
 # Inputs
 plant_path = args.plant_path
 plant_name = os.path.basename(plant_path)
+expected_filename = args.expected_filename
 
-# if expected_filename:
-pcd_name = args.expected_filename
-pointcloud_indir = args.pointcloud_outdir
-full_pcd_input = os.path.join(pointcloud_indir, plant_name, pcd_name)
+if expected_filename != 'foo':
+    pcd_name = args.expected_filename
+    pointcloud_indir = args.pointcloud_outdir
+    full_pcd_input = os.path.join(pointcloud_indir, plant_name, pcd_name + '.ply')
 
-# else:
-#     pcd_name = 'combined_multiway_registered.ply'
-#     pointcloud_indir = plant_path
-#     full_pcd_input = os.path.join(pointcloud_indir, pcd_name)
+else:
+    pcd_name = 'combined_multiway_registered.ply'
+    pointcloud_indir = plant_path
+    full_pcd_input = os.path.join(pointcloud_indir, pcd_name)
 
 # Outputs
 pointcloud_outdir = args.pointcloud_outdir
 figures_outdir = args.figures_outdir
-#pointcloud_filename = args.pointcloud_filename
-
 plant_pointcloud_outdir = os.path.join(pointcloud_outdir, plant_name)
 
 
@@ -213,13 +210,13 @@ for (f_path, points) in tqdm(dataset):
     # dropping no plant points
     arr = np.asarray(points)
 
-    plant_arr = np.delete(arr, np.where( labels == 1), 0)
+    plant_arr = np.delete(arr, np.where( labels == 0), 0)
     plant_pcd = o3d.geometry.PointCloud()
     plant_pcd.points = o3d.utility.Vector3dVector(plant_arr)
     o3d.io.write_point_cloud(full_plant_pcd_path, plant_pcd)
 
     arr = np.asarray(points)
-    soil_arr = np.delete(arr, np.where( labels == 0), 0)
+    soil_arr = np.delete(arr, np.where( labels == 1), 0)
     soil_pcd = o3d.geometry.PointCloud()
     soil_pcd.points = o3d.utility.Vector3dVector(soil_arr)
     o3d.io.write_point_cloud(full_soil_pcd_path, soil_pcd)
