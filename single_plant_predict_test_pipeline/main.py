@@ -122,7 +122,7 @@ args = parser.parse_args()
 
 
 # Prep
-crop = args.crop
+#crop = args.crop
 
 
 # Inputs
