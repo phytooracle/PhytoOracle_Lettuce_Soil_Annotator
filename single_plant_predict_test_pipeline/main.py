@@ -119,32 +119,22 @@ args = parser.parse_args()
 
 
 # --------------------------------------------------------------------------------------------------------------
-
-
 # Prep
 #crop = args.crop
-
 
 # Inputs
 plant_path = args.plant_path
 plant_name = os.path.basename(plant_path)
 
+# if expected_filename:
+pcd_name = args.expected_filename
+pointcloud_indir = args.pointcloud_outdir
+full_pcd_input = os.path.join(pointcloud_indir, plant_name, pcd_name)
 
-if expected_filename:
-    pcd_name = args.expected_filename
-    pointcloud_indir = args.pointcloud_outdir
-    full_pcd_input = os.path.join(pointcloud_indir, plant_name, pcd_name)
-
-else:
-    pcd_name = 'combined_multiway_registered.ply'
-    pointcloud_indir = plant_path
-    full_pcd_input = os.path.join(pointcloud_indir, pcd_name)
-
-
-
-
-
-
+# else:
+#     pcd_name = 'combined_multiway_registered.ply'
+#     pointcloud_indir = plant_path
+#     full_pcd_input = os.path.join(pointcloud_indir, pcd_name)
 
 # Outputs
 pointcloud_outdir = args.pointcloud_outdir
