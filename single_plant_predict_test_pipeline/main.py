@@ -139,7 +139,7 @@ full_pcd_input = os.path.join(pointcloud_indir, plant_name, pcd_name)
 # Outputs
 pointcloud_outdir = args.pointcloud_outdir
 figures_outdir = args.figures_outdir
-pointcloud_filename = args.pointcloud_filename
+#pointcloud_filename = args.pointcloud_filename
 
 plant_pointcloud_outdir = os.path.join(pointcloud_outdir, plant_name)
 
