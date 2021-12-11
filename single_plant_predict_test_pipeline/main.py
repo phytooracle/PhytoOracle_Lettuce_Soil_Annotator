@@ -210,13 +210,13 @@ for (f_path, points) in tqdm(dataset):
     # dropping no plant points
     arr = np.asarray(points)
 
-    plant_arr = np.delete(arr, np.where( labels == 0), 0)
+    plant_arr = np.delete(arr, np.where( labels == 1), 0)
     plant_pcd = o3d.geometry.PointCloud()
     plant_pcd.points = o3d.utility.Vector3dVector(plant_arr)
     o3d.io.write_point_cloud(full_plant_pcd_path, plant_pcd)
 
     arr = np.asarray(points)
-    soil_arr = np.delete(arr, np.where( labels == 1), 0)
+    soil_arr = np.delete(arr, np.where( labels == 0), 0)
     soil_pcd = o3d.geometry.PointCloud()
     soil_pcd.points = o3d.utility.Vector3dVector(soil_arr)
     o3d.io.write_point_cloud(full_soil_pcd_path, soil_pcd)
