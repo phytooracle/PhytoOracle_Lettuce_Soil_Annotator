@@ -40,7 +40,7 @@ def generate_rotating_gif(array, gif_save_path, n_points=None, force_overwrite=F
 
     an_array = np.where(c == 1, 1, 2)
 
-    colors = ['green','sienna']
+    colors = ['sienna','green']
 
     cmap_arr= matplotlib.colors.ListedColormap(colors)
 
@@ -214,15 +214,25 @@ for (f_path, points) in tqdm(dataset):
     plant_pcd = o3d.geometry.PointCloud()
     plant_pcd.points = o3d.utility.Vector3dVector(plant_arr)
     o3d.io.write_point_cloud(full_plant_pcd_path, plant_pcd)
+    plant_point_count = len(plant_arr)
+
 
     arr = np.asarray(points)
     soil_arr = np.delete(arr, np.where( labels == 0), 0)
     soil_pcd = o3d.geometry.PointCloud()
     soil_pcd.points = o3d.utility.Vector3dVector(soil_arr)
     o3d.io.write_point_cloud(full_soil_pcd_path, soil_pcd)
+    soil_point_count = len(soil_arr)
 
     # Adding in gif generation
     pcd_array = np.c_[arr, labels]
 
     generate_rotating_gif(pcd_array, full_gif_outpath)
 
+    df = pd.DataFrame(columns=['plant_name','soil_point_count', 'plant_point_count'])
+
+
+    information = [plant_name, plant_point_count, soil_point_count]
+    df.loc[len(df)] = information
+
+    df.to_csv(full_csv_outpath)
