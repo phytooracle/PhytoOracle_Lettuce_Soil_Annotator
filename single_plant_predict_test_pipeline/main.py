@@ -29,7 +29,12 @@ import matplotlib
 
 
 
-def generate_rotating_gif(array, gif_save_path, n_points=None, force_overwrite=False, scan_number=None):
+def generate_rotating_gif(array, gif_save_path, n_points=40000, force_overwrite=False, scan_number=None):
+
+    if n_points is None:
+        array = array
+    else:
+        array = array[ np.random.choice( array.shape[0], n_points ) ]
 
     fig = plt.figure(figsize=(9,9))
     ax = fig.add_subplot(111, projection='3d')
