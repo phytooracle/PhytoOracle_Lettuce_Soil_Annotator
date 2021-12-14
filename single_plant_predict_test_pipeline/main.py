@@ -27,24 +27,30 @@ import matplotlib
 # -----------------------------------------------------------------------------------------------------------
 
 
-def generate_rotating_gif(points, gif_save_path, n_points=40000, force_overwrite=False, scan_number=None):
 
-    if n_points is None:
-        sampled_points = points
-    else:
-        sampled_points = points[ np.random.choice( points.shape[0], n_points ) ]
+
+def generate_rotating_gif(array, gif_save_path, n_points=None, force_overwrite=False, scan_number=None):
 
     fig = plt.figure(figsize=(9,9))
     ax = fig.add_subplot(111, projection='3d')
-    x = sampled_points[:,0]
-    y = sampled_points[:,1]
-    z = sampled_points[:,2]
-    # c = sampled_points[:,3]
-    cmap = 'Greens'
+    x = array[:,0]
+    y = array[:,1]
+    z = array[:,2]
+    c = array[:,3]
+
+    an_array = np.where(c == 1, 1, 2)
+
+    colors = ['sienna','green']
+
+    cmap_arr= matplotlib.colors.ListedColormap(colors)
+
+
+
+    # cmap = 'Greens'
     ax.scatter(x, y, z,
                zdir='z',
-               c = 'green',
-               cmap = 'Dark2_r',
+               c = an_array,
+               cmap = cmap_arr,
                marker='.',
                s=1,
     )
@@ -71,7 +77,6 @@ def generate_rotating_gif(points, gif_save_path, n_points=40000, force_overwrite
     rot_animation = animation.FuncAnimation(fig, rotate, frames=np.arange(0, 361, 15), interval=300)
     #rot_animation.save('rotation.gif', dpi=80, writer='imagemagick')
     rot_animation.save(gif_save_path, dpi=80)
-
 
 # -----------------------------------------------------------------------------------------------------------
     
