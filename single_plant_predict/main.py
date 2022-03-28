@@ -15,12 +15,15 @@ import open3d as o3d
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import matplotlib
+from utils import reverse_normalization
 
 # Test Command
 # /home/travis/data/season_10/combined_pointclouds/Pacific_74
 # /home/travis/data/ml_weights/dgcnn_trained_on_normalized_arman_format_training_data_perfect_partial_full_30epcs_98acc_47loss.pth
 # python3 main.py -i /home/travis/data/season_10/combined_pointclouds/Pacific_74 --model_path /home/travis/data/ml_weights/dgcnn_trained_on_normalized_arman_format_training_data_perfect_partial_full_30epcs_98acc_47loss.pth
 
+
+# python3 main.py -i /home/travis/repos/PhytoOracle_Lettuce_Soil_Annotator/single_plant_predict/normalization_error_visualization/Mildura_8_ml_crop/2020-02-28_Mildura_8_ml_crop.ply --model_path dgcnn_3d_model.pth
 
 
 # Functions
@@ -94,7 +97,8 @@ args = parser.parse_args()
 
 # --------------------------------------------------------------------------------------------------------------
 
-dataset = LettucePointCloudDataset(files_dir=args.indir)
+dataset, mods = LettucePointCloudDataset(files_dir=args.indir)
+print(mods[0][0], mods[0][1])
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(f'Device: {device}')
@@ -107,7 +111,9 @@ print(f'Model: {type(model).__name__}\n{"-"*15}')
 model.eval()
 
 print("Segmenting PointClouds...")
+cnt = 0
 for (f_path, points) in tqdm(dataset):
+    print(f_path, len(points))
     sampled_indices = np.random.choice(points.shape[0], args.n_samples, replace=False)
     sampled_indices_lookup = set(sampled_indices)
     sampled_points = points[sampled_indices]
@@ -132,19 +138,29 @@ for (f_path, points) in tqdm(dataset):
         # print(lables[0])
     # dropping no plant points
     arr = np.asarray(points)
+    
+    # print(len(points))
+    # un_normal_points = reverse_normalization(points, mods[cnt][0], mods[cnt][1])
+    # arr = np.asarray(un_normal_points)
+    # print(len(arr))
+    # cnt += 1
 
     plant_arr = np.delete(arr, np.where( labels == 1), 0)
+    plant_arr = reverse_normalization(plant_arr, mods[cnt][0], mods[cnt][1])
+    print(f'plant array', len(plant_arr))
     plant_pcd = o3d.geometry.PointCloud()
     plant_pcd.points = o3d.utility.Vector3dVector(plant_arr)
     o3d.io.write_point_cloud(os.path.join(f_path.replace('.ply', '_plant.ply')), plant_pcd)
 
     arr = np.asarray(points)
     soil_arr = np.delete(arr, np.where( labels == 0), 0)
+    soil_arr = reverse_normalization(soil_arr, mods[cnt][0], mods[cnt][1])
+    print('soil array:', len(soil_arr))
     soil_pcd = o3d.geometry.PointCloud()
     soil_pcd.points = o3d.utility.Vector3dVector(soil_arr)
     o3d.io.write_point_cloud(os.path.join(f_path.replace('.ply', '_soil.ply')), soil_pcd)
 
-
+    cnt +=1
 
 
 
