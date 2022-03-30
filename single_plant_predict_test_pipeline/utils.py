@@ -2,11 +2,18 @@ from dgcnn import DGCNN
 import numpy as np
 import torch
 
-
 def normalize_points(points):
-    points = points - points.mean(axis=0)
-    points /= np.linalg.norm(points, axis=1).max()
+    mod1 = points.mean(axis=0)
 
+    points = points - mod1
+    mod2 = np.linalg.norm(points, axis=1).max()
+    points /= mod2
+
+    return points, mod1 , mod2
+
+def reverse_normalization(points, mod1, mod2):
+    points = points*mod2
+    points = points + mod1
     return points
 
 def knn(point, sampled_points, sampled_labels, K, scored_knn=True):

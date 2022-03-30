@@ -15,6 +15,7 @@ import open3d as o3d
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import matplotlib
+from utils import reverse_normalization
 
 # Test Command
 # /home/travis/data/season_10/combined_pointclouds/Pacific_74
@@ -176,7 +177,7 @@ if not os.path.exists(plant_figures_outdir):
 
 
 # main
-dataset = LettucePointCloudDataset(files_dir=full_pcd_input)
+dataset, mods = LettucePointCloudDataset(files_dir=full_pcd_input)
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(f'Device: {device}')
@@ -189,6 +190,7 @@ print(f'Model: {type(model).__name__}\n{"-"*15}')
 model.eval()
 
 print("Segmenting PointClouds...")
+cnt = 0
 for (f_path, points) in tqdm(dataset):
     sampled_indices = np.random.choice(points.shape[0], args.n_samples, replace=False)
     sampled_indices_lookup = set(sampled_indices)
@@ -216,6 +218,8 @@ for (f_path, points) in tqdm(dataset):
     arr = np.asarray(points)
 
     plant_arr = np.delete(arr, np.where( labels == 1), 0)
+    plant_arr = reverse_normalization(plant_arr, mods[cnt][0], mods[cnt][1])
+    print(f'plant array', len(plant_arr))
     plant_pcd = o3d.geometry.PointCloud()
     plant_pcd.points = o3d.utility.Vector3dVector(plant_arr)
     o3d.io.write_point_cloud(full_plant_pcd_path, plant_pcd)
@@ -224,10 +228,14 @@ for (f_path, points) in tqdm(dataset):
 
     arr = np.asarray(points)
     soil_arr = np.delete(arr, np.where( labels == 0), 0)
+    soil_arr = reverse_normalization(soil_arr, mods[cnt][0], mods[cnt][1])
+    print('soil array:', len(soil_arr))
     soil_pcd = o3d.geometry.PointCloud()
     soil_pcd.points = o3d.utility.Vector3dVector(soil_arr)
     o3d.io.write_point_cloud(full_soil_pcd_path, soil_pcd)
     soil_point_count = len(soil_arr)
+
+    cnt += 1
 
     # Adding in gif generation
     pcd_array = np.c_[arr, labels]
